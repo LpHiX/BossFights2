@@ -13,7 +13,7 @@ public class EntityDeathListener implements Listener {
     static public void onEntityDeath(EntityDeathEvent e){
         BossFights2Plugin bossFights2Plugin = (BossFights2Plugin) BossFights2Plugin.getPlugin();
         BossFactory bossFactory = bossFights2Plugin.getBossFactory();
-        if(bossFactory.cancelBossTask(e.getEntity())){
+        if(bossFactory.deathMethods(e.getEntity())){
             Bukkit.getLogger().info("[BossFights] BossTask Successfully cancelled");
         }
     }
