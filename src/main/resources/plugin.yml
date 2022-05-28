@@ -1,0 +1,8 @@
+name: BossFights2
+version: '${project.version}'
+main: me.lphix.bossfights2.BossFights2Plugin
+api-version: 1.18
+commands:
+  boss:
+    description: Main bossfights command
+    usage: /<command>
