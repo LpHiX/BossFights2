@@ -6,18 +6,20 @@ import me.lphix.bossfights2.commands.BossCommand;
 import me.lphix.bossfights2.listeners.EntityDeathListener;
 import me.lphix.bossfights2.listeners.InventoryClickListener;
 import me.lphix.bossfights2.listeners.PlayerInteractListener;
+import me.lphix.bossfights2.utilities.ItemUtilities;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Boss;
 import org.bukkit.entity.Wither;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public final class BossFights2Plugin extends JavaPlugin {
 
-    private static JavaPlugin plugin;
     private BossFactory bossFactory;
+    private ItemUtilities itemUtilities;
 
     @Override
     public void onEnable() {
@@ -29,29 +31,22 @@ public final class BossFights2Plugin extends JavaPlugin {
         Bukkit.getLogger().info("[BossFights2] has started!");
     }
     private void setupClasses(){
-        plugin = this;
         bossFactory = new BossFactory();
+        itemUtilities = new ItemUtilities(this);
     }
     private void registerCommands(){
-        this.getCommand("boss").setExecutor(new BossCommand());
+        this.getCommand("boss").setExecutor(new BossCommand(bossFactory, itemUtilities));
     }
     private void registerListeners(){
-        Bukkit.getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
-        Bukkit.getServer().getPluginManager().registerEvents(new PlayerInteractListener(), this);
-        Bukkit.getServer().getPluginManager().registerEvents(new EntityDeathListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new InventoryClickListener(bossFactory), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new PlayerInteractListener(itemUtilities), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new EntityDeathListener(bossFactory), this);
     }
     private void registerBosses() {
-        bossFactory.registerBoss(WithersDisciple.class, WithersDisciple::new);
+        bossFactory.registerBoss(WithersDisciple.class, () -> new WithersDisciple(bossFactory, this));
     }
     @Override
     public void onDisable() {
         Bukkit.getLogger().info("[BossFights2] has ended!");
-    }
-
-    public static JavaPlugin getPlugin(){
-        return plugin;
-    }
-    public BossFactory getBossFactory() {
-        return bossFactory;
     }
 }

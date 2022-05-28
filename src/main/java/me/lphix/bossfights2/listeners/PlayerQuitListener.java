@@ -13,11 +13,14 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class PlayerQuitListener implements Listener {
+    private final BossFactory bossFactory;
+
+    public PlayerQuitListener(BossFactory bossFactory){
+        this.bossFactory = bossFactory;
+    }
     @EventHandler
-    static public void onPlayerLeave(PlayerQuitEvent e){
+    public void onPlayerLeave(PlayerQuitEvent e){
         e.getPlayer().sendMessage("bye");
-        BossFights2Plugin plugin = (BossFights2Plugin) BossFights2Plugin.getPlugin();
-        BossFactory bossFactory = plugin.getBossFactory();
         Consumer<ABoss> removePlayerFromBar = l -> l.removeBar(e.getPlayer());
         bossFactory.getActiveBosses().forEach(removePlayerFromBar);
     }

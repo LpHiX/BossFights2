@@ -37,6 +37,7 @@ public class BossFactory {
             return false;
         }
         ABoss aBoss = activeBossList.get(entity);
+        activeBossList.remove(entity);
         aBoss.deathMethods();
         return true;
     }

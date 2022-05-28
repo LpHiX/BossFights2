@@ -9,10 +9,12 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 public class EntityDeathListener implements Listener {
+    BossFactory bossFactory;
+    public EntityDeathListener(BossFactory bossFactory) {
+        this.bossFactory = bossFactory;
+    }
     @EventHandler
-    static public void onEntityDeath(EntityDeathEvent e){
-        BossFights2Plugin bossFights2Plugin = (BossFights2Plugin) BossFights2Plugin.getPlugin();
-        BossFactory bossFactory = bossFights2Plugin.getBossFactory();
+    public void onEntityDeath(EntityDeathEvent e){
         if(bossFactory.deathMethods(e.getEntity())){
             Bukkit.getLogger().info("[BossFights] BossTask Successfully cancelled");
         }

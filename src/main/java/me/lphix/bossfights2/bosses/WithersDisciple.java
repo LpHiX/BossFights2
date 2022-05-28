@@ -12,6 +12,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.WitherSkeleton;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.w3c.dom.Attr;
 
@@ -24,8 +25,8 @@ import java.util.function.Consumer;
 public class WithersDisciple extends ABoss{
     final List<Player> playerWithBarList = new ArrayList<>();
     Component displayName = Component.text("Wither's Disciple", NamedTextColor.DARK_GRAY);
-    public WithersDisciple() {
-        super(1000);
+    public WithersDisciple(BossFactory bossFactory, JavaPlugin plugin) {
+        super(bossFactory, plugin, 1000);
     }
     @Override
     public void bossMethods(Entity entity) {
@@ -70,7 +71,7 @@ public class WithersDisciple extends ABoss{
                 //  meteor summon, teleport away and circle around player
                 //  summon 4 ghost zombies (alive for 10 seconds)
             }
-        }.runTaskTimer(BossFights2Plugin.getPlugin(), 0L, 20L);
+        }.runTaskTimer(plugin, 0L, 20L);
     }
     public void spawnBoss(Location location){
         this.bossEntity = location.getWorld().spawn(location, WitherSkeleton.class, b -> {
@@ -80,8 +81,7 @@ public class WithersDisciple extends ABoss{
             b.setHealth(maxHealth);
         });
         ((LivingEntity) bossEntity).setRemoveWhenFarAway(false);
-        BossFights2Plugin plugin = (BossFights2Plugin) BossFights2Plugin.getPlugin();
-        plugin.getBossFactory().putBoss(this);
+        bossFactory.putBoss(this);
         bossMethods(bossEntity);
     }
     @Override

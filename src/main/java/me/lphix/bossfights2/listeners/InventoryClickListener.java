@@ -11,19 +11,21 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class InventoryClickListener implements Listener {
+    BossFactory bossFactory;
+    public InventoryClickListener(BossFactory bossFactory) {
+        this.bossFactory = bossFactory;
+    }
     @EventHandler
-    public static void onInventoryClick(InventoryClickEvent e){
-        if(e.getClickedInventory() == null){
-            return;
-        }
+    public void onInventoryClick(InventoryClickEvent e){
+        if(e.getClickedInventory() == null) return;
         if(e.getClickedInventory().getHolder() instanceof BossMenu){
             Player p = (Player) e.getWhoClicked();
-            BossFights2Plugin bossFights2Plugin = (BossFights2Plugin) BossFights2Plugin.getPlugin();
-            BossFactory bossFactory = bossFights2Plugin.getBossFactory();
             e.setCancelled(true);
             switch(e.getSlot()){
                 case 10:
                     bossFactory.spawnBoss(p.getLocation(), WithersDisciple.class);
+                default:
+                    break;
             }
         }
     }
